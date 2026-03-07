@@ -5,22 +5,40 @@ import { useRouter } from "next/navigation"
 
 type Midia = { src: string; type: "image" | "video"; label: string }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/fachadas-em-acm/biomagistral.jpeg", type: "image", label: "Biomagistral" },
+  { src: "/portfolio/fachadas-em-acm/casa-de-carnes-leite-mel.png", type: "image", label: "Casa de Carnes Leite Mel" },
+  { src: "/portfolio/fachadas-em-acm/click-fios.jpeg", type: "image", label: "Click Fios" },
+  { src: "/portfolio/fachadas-em-acm/cylex.png", type: "image", label: "Cylex" },
+  { src: "/portfolio/fachadas-em-acm/droga-bela.jpeg", type: "image", label: "Droga Bela" },
+  { src: "/portfolio/fachadas-em-acm/face-lips.jpg", type: "image", label: "Face Lips" },
+  { src: "/portfolio/fachadas-em-acm/fachada-boticario.png", type: "image", label: "Fachada Boticário" },
+  { src: "/portfolio/fachadas-em-acm/fachada-claro.png", type: "image", label: "Fachada Claro" },
+  { src: "/portfolio/fachadas-em-acm/fachada-mac.png", type: "image", label: "Fachada Mac" },
+  { src: "/portfolio/fachadas-em-acm/fachada-sabin.jpg", type: "image", label: "Fachada Sabin" },
+  { src: "/portfolio/fachadas-em-acm/fachada-santi.png", type: "image", label: "Fachada Santi" },
+  { src: "/portfolio/fachadas-em-acm/fachada-shopping.mp4", type: "video", label: "Fachada Shopping" },
+  { src: "/portfolio/fachadas-em-acm/farmacia.mp4", type: "video", label: "Farmácia" },
+  { src: "/portfolio/fachadas-em-acm/hospital-orto.png", type: "image", label: "Hospital Orto" },
+  { src: "/portfolio/fachadas-em-acm/hotel-jardim.png", type: "image", label: "Hotel Jardim" },
+  { src: "/portfolio/fachadas-em-acm/lear-marquise.jpg", type: "image", label: "Lear Marquise" },
+  { src: "/portfolio/fachadas-em-acm/letra-caixa-suzano.png", type: "image", label: "Letra Caixa Suzano" },
+  { src: "/portfolio/fachadas-em-acm/odonto-company.png", type: "image", label: "Odonto Company" },
+  { src: "/portfolio/fachadas-em-acm/orthopride.png", type: "image", label: "Orthopride" },
+  { src: "/portfolio/fachadas-em-acm/padaria-mana.jpg", type: "image", label: "Padaria Mana" },
+  { src: "/portfolio/fachadas-em-acm/padaria-vila-branca.png", type: "image", label: "Padaria Vila Branca" },
+  { src: "/portfolio/fachadas-em-acm/quilsilver.jpeg", type: "image", label: "Quilsilver" },
+  { src: "/portfolio/fachadas-em-acm/roated-potato.png", type: "image", label: "Roated Potato" },
+  { src: "/portfolio/fachadas-em-acm/sorrix.jpg", type: "image", label: "Sorrix" },
+]
+
 export default function Page() {
-
   const router = useRouter()
-
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/fachadas-em-acm"),
-        { cache: "no-store" }
-      )
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
   useEffect(() => {
@@ -130,15 +148,6 @@ export default function Page() {
           letter-spacing: .02em;
         }
 
-        .empty{
-          background:#fff;
-          border-radius:16px;
-          padding:18px;
-          border:1px solid rgba(15,23,42,.06);
-          color:#64748b;
-          text-align:center;
-        }
-
         .lb{
           position:fixed;
           inset:0;
@@ -201,9 +210,8 @@ export default function Page() {
       `}</style>
 
       <div className="wrap">
-
         <div className="topBar">
-          <button className="btnVoltar" onClick={() => router.back()}>
+          <button className="btnVoltar" onClick={() => router.back()} type="button">
             ← Voltar
           </button>
         </div>
@@ -213,42 +221,38 @@ export default function Page() {
           Revestimentos • Fachadas completas • Acabamento premium
         </div>
 
-        {midias.length === 0 ? (
-          <div className="empty">
-            Nenhuma mídia encontrada em <b>public/portfolio/fachadas-em-acm/</b>
-          </div>
-        ) : (
-          <div className="grid">
-            {midias.map((m) => (
-              <div
-                key={m.src}
-                className="card"
-                onClick={() => setActive(m)}
-                role="button"
-                title={m.label}
-              >
-                <div className="thumb">
-                  {m.type === "image" ? (
-                    <img src={m.src} alt={m.label} loading="lazy" />
-                  ) : (
-                    <>
-                      <span className="playBadge">▶ VÍDEO</span>
-                      <video src={m.src} muted playsInline preload="metadata" />
-                    </>
-                  )}
-                </div>
-
-                <div className="cap">{m.label}</div>
+        <div className="grid">
+          {midias.map((m) => (
+            <div
+              key={m.src}
+              className="card"
+              onClick={() => setActive(m)}
+              role="button"
+              title={m.label}
+            >
+              <div className="thumb">
+                {m.type === "image" ? (
+                  <img src={m.src} alt={m.label} loading="lazy" />
+                ) : (
+                  <>
+                    <span className="playBadge">▶ VÍDEO</span>
+                    <video src={m.src} muted playsInline preload="metadata" />
+                  </>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+
+              <div className="cap">{m.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {active && (
         <div className="lb" onClick={() => setActive(null)}>
           <div className="lbBox" onClick={(e) => e.stopPropagation()}>
-            <button className="lbClose" onClick={() => setActive(null)}>✕</button>
+            <button className="lbClose" onClick={() => setActive(null)} type="button">
+              ✕
+            </button>
 
             <div className="lbTitle">{active.label}</div>
 
