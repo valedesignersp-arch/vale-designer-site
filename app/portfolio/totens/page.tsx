@@ -5,24 +5,24 @@ import { useRouter } from "next/navigation"
 
 type Midia = { src: string; type: "image" | "video"; label: string }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/totens/totem-acm-adesivado.jpeg", type: "image", label: "Totem ACM Adesivado" },
+  { src: "/portfolio/totens/totem-acm-vazado-externo.jpg", type: "image", label: "Totem ACM Vazado Externo" },
+  { src: "/portfolio/totens/totem-acm-vazado-sabin.jpg", type: "image", label: "Totem ACM Vazado Sabin" },
+  { src: "/portfolio/totens/totem-adesivado-iluminado.jpg", type: "image", label: "Totem Adesivado Iluminado" },
+  { src: "/portfolio/totens/totem-com-letra-inox.jpg", type: "image", label: "Totem com Letra Inox" },
+  { src: "/portfolio/totens/totem-interno-adesivado.jpeg", type: "image", label: "Totem Interno Adesivado" },
+]
+
 export default function Page() {
   const router = useRouter()
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
-  // carrega mídias da pasta (sem cache)
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/totens"),
-        { cache: "no-store" }
-      )
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
-  // fecha modal no ESC
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null)
@@ -96,7 +96,7 @@ export default function Page() {
         @media (max-width: 900px){ .thumb{ height: 280px; } }
         @media (max-width: 520px){ .thumb{ height: 240px; } }
 
-        .thumb img, .thumb video{
+        .thumb img{
           position:absolute;
           inset:0;
           width:100%;
@@ -105,36 +105,12 @@ export default function Page() {
           display:block;
         }
 
-        .playBadge{
-          position:absolute;
-          left:12px;
-          top:12px;
-          background: rgba(0,0,0,.55);
-          color:#fff;
-          font-weight:900;
-          font-size:12px;
-          padding:8px 10px;
-          border-radius:999px;
-          border:1px solid rgba(255,255,255,.18);
-          backdrop-filter: blur(6px);
-          z-index:2;
-        }
-
         .cap{
           padding: 12px 12px 14px;
           font-weight: 900;
           color:#0f172a;
           font-size: 13px;
           letter-spacing: .02em;
-        }
-
-        .empty{
-          background:#fff;
-          border-radius:16px;
-          padding:18px;
-          border:1px solid rgba(15,23,42,.06);
-          color:#64748b;
-          text-align:center;
         }
 
         .lb{
@@ -207,36 +183,23 @@ export default function Page() {
         <div className="title">Totens</div>
         <div className="sub">Totens luminosos • Totens em ACM • Sinalização e mais</div>
 
-        {midias.length === 0 ? (
-          <div className="empty">
-            Nenhuma mídia encontrada em <b>public/portfolio/totens/</b>
-          </div>
-        ) : (
-          <div className="grid">
-            {midias.map((m) => (
-              <div
-                key={m.src}
-                className="card"
-                onClick={() => setActive(m)}
-                role="button"
-                title={m.label}
-              >
-                <div className="thumb">
-                  {m.type === "image" ? (
-                    <img src={m.src} alt={m.label || "Totens"} loading="lazy" />
-                  ) : (
-                    <>
-                      <span className="playBadge">▶ VÍDEO</span>
-                      <video src={m.src} muted playsInline preload="metadata" />
-                    </>
-                  )}
-                </div>
-
-                <div className="cap">{m.label}</div>
+        <div className="grid">
+          {midias.map((m) => (
+            <div
+              key={m.src}
+              className="card"
+              onClick={() => setActive(m)}
+              role="button"
+              title={m.label}
+            >
+              <div className="thumb">
+                <img src={m.src} alt={m.label || "Totens"} loading="lazy" />
               </div>
-            ))}
-          </div>
-        )}
+
+              <div className="cap">{m.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {active && (
@@ -248,11 +211,7 @@ export default function Page() {
 
             <div className="lbTitle">{active.label}</div>
 
-            {active.type === "image" ? (
-              <img className="lbMedia" src={active.src} alt={active.label} />
-            ) : (
-              <video className="lbMedia" src={active.src} controls playsInline autoPlay />
-            )}
+            <img className="lbMedia" src={active.src} alt={active.label} />
           </div>
         </div>
       )}
