@@ -28,7 +28,7 @@ export const CATEGORIAS: Categoria[] = [
   {
     nome: "Luminosos",
     slug: "luminosos",
-    icon: "/icons/luminosos.png",
+    icon: "/icons/luminosos-novo.png",
   },
   {
     nome: "Fachadas em ACM",
