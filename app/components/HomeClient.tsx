@@ -21,7 +21,6 @@ const CONFIG = {
 const WA = `https://wa.me/${CONFIG.whatsapp}`
 const waMsg = (t: string) => `${WA}?text=${encodeURIComponent(t)}`
 
-// ====== CLIENTES (logos em /public/clientes/...) ======
 const CLIENTES = [
   { logo: '/clientes/AMBIPAR.png', nome: 'Ambipar' },
   { logo: '/clientes/ATULIPA.png', nome: 'Atulipa' },
@@ -55,7 +54,6 @@ const CLIENTES = [
   { logo: '/clientes/LEITEMEL.png', nome: 'Leite & Mel' },
   { logo: '/clientes/LOCALIZA.png', nome: 'Localiza' },
   { logo: '/clientes/MAGALU.png', nome: 'Magalu' },
-  
   { logo: '/clientes/MAGICFEET.png', nome: 'Magic Feet' },
   { logo: '/clientes/MARIA.png', nome: 'Maria' },
   { logo: '/clientes/MASTRI.png', nome: 'Mastri' },
@@ -86,7 +84,6 @@ const CLIENTES = [
   { logo: '/clientes/UNIVAP.png', nome: 'Univap' },
   { logo: '/clientes/VIVO.png', nome: 'Vivo' },
   { logo: '/clientes/W.png', nome: 'W' },
-
   { logo: '/clientes/houter.png', nome: 'Houter' },
   { logo: '/clientes/hotel.png', nome: 'Hotel' },
   { logo: '/clientes/clickfios.png', nome: 'Clickfios' },
@@ -94,7 +91,6 @@ const CLIENTES = [
   { logo: '/clientes/multifarma.png', nome: 'Multifarma' },
 ]
 
-// ====== PORTFÓLIO ======
 const PORTFOLIO = [
   '/portfolio/1.jpg',
   '/portfolio/2.jpg',
@@ -157,7 +153,7 @@ export default function HomeClient({ scrollToId }: Props) {
 
   return (
     <main id="home">
-      <style>{`
+      <style jsx global>{`
         :root{
           --green:#b5d600;
           --text:#0f172a;
