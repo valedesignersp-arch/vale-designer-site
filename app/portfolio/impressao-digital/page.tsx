@@ -5,24 +5,42 @@ import { useRouter } from "next/navigation"
 
 type Midia = { src: string; type: "image" | "video"; label: string }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/impressao-digital/adesivo-freezer-04.jpg", type: "image", label: "Adesivo Freezer 04" },
+  { src: "/portfolio/impressao-digital/adesivo-jateado-recorte.jpg", type: "image", label: "Adesivo Jateado Recorte" },
+  { src: "/portfolio/impressao-digital/adesivo-parede-03.jpg", type: "image", label: "Adesivo Parede 03" },
+  { src: "/portfolio/impressao-digital/adesivo-parede.jpg", type: "image", label: "Adesivo Parede" },
+  { src: "/portfolio/impressao-digital/adesivo-perfurado-porta-05.jpg", type: "image", label: "Adesivo Perfurado Porta 05" },
+  { src: "/portfolio/impressao-digital/adesivo-perfurado-vidro.jpg", type: "image", label: "Adesivo Perfurado Vidro" },
+  { src: "/portfolio/impressao-digital/adesivo-perfurado-vitrine-01.jpg", type: "image", label: "Adesivo Perfurado Vitrine 01" },
+  { src: "/portfolio/impressao-digital/adesivo-perfurado-vitrine-02.jpg", type: "image", label: "Adesivo Perfurado Vitrine 02" },
+  { src: "/portfolio/impressao-digital/adesivo-recorte-01.jpg", type: "image", label: "Adesivo Recorte 01" },
+  { src: "/portfolio/impressao-digital/adesivo-recorte-parede-consultorio.jpg", type: "image", label: "Adesivo Recorte Parede Consultório" },
+  { src: "/portfolio/impressao-digital/adesivo-recorte-parede.jpg", type: "image", label: "Adesivo Recorte Parede" },
+  { src: "/portfolio/impressao-digital/adesivo-recorte.jpg", type: "image", label: "Adesivo Recorte" },
+  { src: "/portfolio/impressao-digital/adesivo-vitrine-03.jpg", type: "image", label: "Adesivo Vitrine 03" },
+  { src: "/portfolio/impressao-digital/adesivo-plotagem-recorte-06.jpg", type: "image", label: "Adesivo Plotagem Recorte 06" },
+  { src: "/portfolio/impressao-digital/lona-com-ilhos.jpg", type: "image", label: "Lona com Ilhós" },
+  { src: "/portfolio/impressao-digital/placa-ps-adesivada-vivo.jpg", type: "image", label: "Placa PS Adesivada Vivo" },
+  { src: "/portfolio/impressao-digital/placa-lona-440g.jpg", type: "image", label: "Placa Lona 440g" },
+  { src: "/portfolio/impressao-digital/placa-ps-adesivada-03.jpg", type: "image", label: "Placa PS Adesivada 03" },
+  { src: "/portfolio/impressao-digital/placa-ps-adesivada-02.jpg", type: "image", label: "Placa PS Adesivada 02" },
+  { src: "/portfolio/impressao-digital/placa-ps-adesivado.jpg", type: "image", label: "Placa PS Adesivado" },
+  { src: "/portfolio/impressao-digital/placas-ps-adesivada.mp4", type: "video", label: "Placas PS Adesivada" },
+  { src: "/portfolio/impressao-digital/plotagem-adesivo-vinil-recorte.jpg", type: "image", label: "Plotagem Adesivo Vinil Recorte" },
+  { src: "/portfolio/impressao-digital/plotagen-adesivo-recorte.jpg", type: "image", label: "Plotagem Adesivo Recorte" },
+  { src: "/portfolio/impressao-digital/quadro-decorativo-adesivado-com-moldura.jpg", type: "image", label: "Quadro Decorativo Adesivado com Moldura" },
+]
+
 export default function Page() {
   const router = useRouter()
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
-  // carrega mídias da pasta (sem cache)
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/impressao-digital"),
-        { cache: "no-store" }
-      )
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
-  // fecha modal no ESC
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null)
