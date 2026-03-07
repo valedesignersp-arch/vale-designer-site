@@ -5,24 +5,58 @@ import { useRouter } from "next/navigation"
 
 type Midia = { src: string; type: "image" | "video"; label: string }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/letras-caixa/Acm-letra-caixa-inox.jpg", type: "image", label: "ACM Letra Caixa Inox" },
+  { src: "/portfolio/letras-caixa/Letra-caixa-galvanizada-gigante.png", type: "image", label: "Letra Caixa Galvanizada Gigante" },
+  { src: "/portfolio/letras-caixa/Letra-galvanizada-com-led.jpg", type: "image", label: "Letra Galvanizada com LED" },
+  { src: "/portfolio/letras-caixa/Neon-led.mp4", type: "video", label: "Neon LED" },
+
+  { src: "/portfolio/letras-caixa/letra-caixa-com-frente-em-acrilico.jpeg", type: "image", label: "Letra Caixa com Frente em Acrílico" },
+  { src: "/portfolio/letras-caixa/letra-caixa-em-pvc-acm.jpg", type: "image", label: "Letra Caixa em PVC ACM" },
+  { src: "/portfolio/letras-caixa/letra-caixa-galvanizada-com-frente-em-acriico.jpg", type: "image", label: "Letra Caixa Galvanizada com Frente em Acrílico" },
+  { src: "/portfolio/letras-caixa/letra-caixa-galvanizada-pvc.jpg", type: "image", label: "Letra Caixa Galvanizada PVC" },
+  { src: "/portfolio/letras-caixa/letra-caixa-galvanizada.jpg", type: "image", label: "Letra Caixa Galvanizada" },
+  { src: "/portfolio/letras-caixa/letra-caixa-inox-com-acrilico-led.jpg", type: "image", label: "Letra Caixa Inox com Acrílico LED" },
+  { src: "/portfolio/letras-caixa/letra-caixa-toda-acrilico-com-led.jpg", type: "image", label: "Letra Caixa Toda Acrílico com LED" },
+  { src: "/portfolio/letras-caixa/letra-caixa-toda-em-acrilico-com-led.jpg", type: "image", label: "Letra Caixa Toda em Acrílico com LED" },
+  { src: "/portfolio/letras-caixa/letra-com-led-inox.jpg", type: "image", label: "Letra com LED Inox" },
+  { src: "/portfolio/letras-caixa/letra-mdf.jpg", type: "image", label: "Letra MDF" },
+
+  { src: "/portfolio/letras-caixa/letras-caixa-galvanizada-com-led.png", type: "image", label: "Letras Caixa Galvanizada com LED" },
+  { src: "/portfolio/letras-caixa/letras-em-inox-com-led.png", type: "image", label: "Letras em Inox com LED" },
+  { src: "/portfolio/letras-caixa/letras-em-pvc.png", type: "image", label: "Letras em PVC" },
+
+  { src: "/portfolio/letras-caixa/logo-5mm.jpg", type: "image", label: "Logo 5mm" },
+  { src: "/portfolio/letras-caixa/logo-em-acm.jpg", type: "image", label: "Logo em ACM" },
+  { src: "/portfolio/letras-caixa/logo-em-letra-caixa-galvanizada-com-led.jpg", type: "image", label: "Logo em Letra Caixa Galvanizada com LED" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-studio.png", type: "image", label: "Logo em PVC Studio" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-adesivado.jpg", type: "image", label: "Logo em PVC Adesivado" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-externo.jpg", type: "image", label: "Logo em PVC Externo" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-fundo-em-acm.jpeg", type: "image", label: "Logo em PVC Fundo em ACM" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-fundo-em-acm.jpg", type: "image", label: "Logo em PVC Fundo em ACM 2" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-king.jpg", type: "image", label: "Logo em PVC King" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc-neon-led.jpeg", type: "image", label: "Logo em PVC Neon LED" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc.jpeg", type: "image", label: "Logo em PVC" },
+  { src: "/portfolio/letras-caixa/logo-em-pvc20.jpeg", type: "image", label: "Logo em PVC 20" },
+  { src: "/portfolio/letras-caixa/logo-pvc-10mm.jpg", type: "image", label: "Logo PVC 10mm" },
+  { src: "/portfolio/letras-caixa/logo-pvc-dourado.jpg", type: "image", label: "Logo PVC Dourado" },
+  { src: "/portfolio/letras-caixa/logo-pvc-interno-clinica.jpeg", type: "image", label: "Logo PVC Interno Clínica" },
+  { src: "/portfolio/letras-caixa/logo-pvc-marcas.jpg", type: "image", label: "Logo PVC Marcas" },
+  { src: "/portfolio/letras-caixa/logo-pvc-parede.jpg", type: "image", label: "Logo PVC Parede" },
+  { src: "/portfolio/letras-caixa/logo-pvc-pintado.jpg", type: "image", label: "Logo PVC Pintado" },
+  { src: "/portfolio/letras-caixa/logo-recepcao.jpg", type: "image", label: "Logo Recepção" },
+  { src: "/portfolio/letras-caixa/logopvc-15mm.jpeg", type: "image", label: "Logo PVC 15mm" },
+]
+
 export default function Page() {
   const router = useRouter()
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
-  // carrega mídias da pasta (sem cache)
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/letras-caixa"),
-        { cache: "no-store" }
-      )
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
-  // fecha modal no ESC
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null)
@@ -33,225 +67,120 @@ export default function Page() {
 
   return (
     <main style={{ background: "#eef2f7", minHeight: "100vh" }}>
-      <style>{`
-        .wrap{ max-width:1200px; margin:0 auto; padding:60px 20px; }
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 20px" }}>
+        <button
+          onClick={() => router.back()}
+          style={{
+            padding: "10px 16px",
+            borderRadius: 12,
+            border: "1px solid #ddd",
+            fontWeight: 700,
+            cursor: "pointer",
+            marginBottom: 20,
+          }}
+        >
+          ← Voltar
+        </button>
 
-        .topBar{
-          display:flex;
-          justify-content:flex-start;
-          margin-bottom:20px;
-        }
+        <h1 style={{ textAlign: "center", fontSize: 34, fontWeight: 900 }}>
+          Letras Caixa
+        </h1>
 
-        .btnVoltar{
-          display:inline-flex;
-          align-items:center;
-          gap:8px;
-          padding:10px 16px;
-          background:#ffffff;
-          border:1px solid rgba(15,23,42,.10);
-          border-radius:12px;
-          font-weight:800;
-          font-size:14px;
-          color:#0f172a;
-          cursor:pointer;
-          transition:all .2s ease;
-          box-shadow:0 8px 20px rgba(15,23,42,.06);
-        }
+        <p style={{ textAlign: "center", color: "#64748b", marginBottom: 30 }}>
+          Letras caixa iluminadas • Fachadas modernas • Comunicação visual premium
+        </p>
 
-        .btnVoltar:hover{
-          background:#f8fafc;
-          transform:translateY(-2px);
-          box-shadow:0 14px 28px rgba(15,23,42,.10);
-        }
-
-        .title{ text-align:center; font-size:34px; font-weight:900; color:#0f172a; margin-bottom:8px; }
-        .sub{ text-align:center; color:#64748b; margin-bottom:28px; }
-
-        .grid{
-          display:grid;
-          grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-          gap:18px;
-        }
-
-        .card{
-          background:#fff;
-          border-radius:18px;
-          overflow:hidden;
-          border:1px solid rgba(15,23,42,.06);
-          box-shadow:0 10px 28px rgba(15,23,42,.10);
-          cursor:pointer;
-          transition: transform .18s ease, box-shadow .18s ease;
-        }
-        .card:hover{
-          transform: translateY(-4px);
-          box-shadow:0 18px 50px rgba(15,23,42,.16);
-        }
-
-        .thumb{
-          position:relative;
-          width:100%;
-          height:320px;
-          background:#0b1220;
-        }
-        @media (max-width: 900px){ .thumb{ height: 280px; } }
-        @media (max-width: 520px){ .thumb{ height: 240px; } }
-
-        .thumb img, .thumb video{
-          position:absolute;
-          inset:0;
-          width:100%;
-          height:100%;
-          object-fit: cover;
-          display:block;
-        }
-
-        .playBadge{
-          position:absolute;
-          left:12px;
-          top:12px;
-          background: rgba(0,0,0,.55);
-          color:#fff;
-          font-weight:900;
-          font-size:12px;
-          padding:8px 10px;
-          border-radius:999px;
-          border:1px solid rgba(255,255,255,.18);
-          backdrop-filter: blur(6px);
-          z-index:2;
-        }
-
-        .cap{
-          padding: 12px 12px 14px;
-          font-weight: 900;
-          color:#0f172a;
-          font-size: 13px;
-          letter-spacing: .02em;
-        }
-
-        .empty{
-          background:#fff;
-          border-radius:16px;
-          padding:18px;
-          border:1px solid rgba(15,23,42,.06);
-          color:#64748b;
-          text-align:center;
-        }
-
-        .lb{
-          position:fixed; inset:0;
-          z-index:99999;
-          background: rgba(0,0,0,.72);
-          backdrop-filter: blur(8px);
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          padding: 18px;
-        }
-        .lbBox{
-          width: min(980px, 96vw);
-          max-height: 90vh;
-          background:#0b1220;
-          border-radius: 18px;
-          overflow:hidden;
-          border:1px solid rgba(255,255,255,.10);
-          box-shadow: 0 30px 90px rgba(0,0,0,.50);
-          position:relative;
-        }
-
-        .lbTitle{
-          position:absolute;
-          left: 14px;
-          top: 14px;
-          padding: 10px 12px;
-          border-radius: 14px;
-          background: rgba(0,0,0,.55);
-          border: 1px solid rgba(255,255,255,.14);
-          color:#fff;
-          font-weight: 900;
-          font-size: 13px;
-          backdrop-filter: blur(8px);
-          z-index:2;
-        }
-
-        .lbMedia{
-          width:100%;
-          height: 90vh;
-          max-height: 90vh;
-          display:block;
-          object-fit: contain;
-          background:#0b1220;
-        }
-        .lbClose{
-          position:absolute;
-          right: 12px;
-          top: 12px;
-          height: 42px;
-          width: 42px;
-          border-radius: 14px;
-          border: 1px solid rgba(255,255,255,.16);
-          background: rgba(255,255,255,.08);
-          color:#fff;
-          cursor:pointer;
-          font-weight: 900;
-          z-index:2;
-        }
-      `}</style>
-
-      <div className="wrap">
-        <div className="topBar">
-          <button className="btnVoltar" onClick={() => router.back()} type="button">
-            ← Voltar
-          </button>
-        </div>
-
-        <div className="title">Letras Caixa</div>
-        <div className="sub">Letras caixa iluminadas • Fachadas modernas • Comunicação visual premium</div>
-
-        {midias.length === 0 ? (
-          <div className="empty">
-            Nenhuma mídia encontrada em <b>public/portfolio/letras-caixa/</b>
-          </div>
-        ) : (
-          <div className="grid">
-            {midias.map((m) => (
-              <div
-                key={m.src}
-                className="card"
-                onClick={() => setActive(m)}
-                role="button"
-                title={m.label}
-              >
-                <div className="thumb">
-                  {m.type === "image" ? (
-                    <img src={m.src} alt={m.label || "Letras Caixa"} loading="lazy" />
-                  ) : (
-                    <>
-                      <span className="playBadge">▶ VÍDEO</span>
-                      <video src={m.src} muted playsInline preload="metadata" />
-                    </>
-                  )}
-                </div>
-
-                <div className="cap">{m.label}</div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+            gap: 18,
+          }}
+        >
+          {midias.map((m) => (
+            <div
+              key={m.src}
+              style={{
+                background: "#fff",
+                borderRadius: 18,
+                overflow: "hidden",
+                cursor: "pointer",
+                boxShadow: "0 10px 28px rgba(0,0,0,.1)",
+              }}
+              onClick={() => setActive(m)}
+            >
+              <div style={{ height: 320, background: "#0b1220", position: "relative" }}>
+                {m.type === "image" ? (
+                  <img
+                    src={m.src}
+                    alt={m.label}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    loading="lazy"
+                  />
+                ) : (
+                  <>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 10,
+                        left: 10,
+                        background: "rgba(0,0,0,.6)",
+                        color: "#fff",
+                        padding: "6px 10px",
+                        borderRadius: 20,
+                        fontSize: 12,
+                        fontWeight: 800,
+                        zIndex: 2,
+                      }}
+                    >
+                      ▶ VÍDEO
+                    </div>
+                    <video
+                      src={m.src}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+
+              <div style={{ padding: "12px", fontWeight: 800 }}>
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {active && (
-        <div className="lb" onClick={() => setActive(null)} aria-modal="true" role="dialog">
-          <div className="lbBox" onClick={(e) => e.stopPropagation()}>
-            <button className="lbClose" onClick={() => setActive(null)} type="button">
-              ✕
-            </button>
-
-            <div className="lbTitle">{active.label}</div>
-
+        <div
+          onClick={() => setActive(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: "90vw" }}>
             {active.type === "image" ? (
-              <img className="lbMedia" src={active.src} alt={active.label} />
+              <img
+                src={active.src}
+                alt={active.label}
+                style={{ maxHeight: "90vh", borderRadius: 12 }}
+              />
             ) : (
-              <video className="lbMedia" src={active.src} controls playsInline autoPlay />
+              <video
+                src={active.src}
+                controls
+                autoPlay
+                style={{ maxHeight: "90vh" }}
+              />
             )}
           </div>
         </div>
