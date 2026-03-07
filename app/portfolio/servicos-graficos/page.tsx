@@ -5,22 +5,21 @@ import { useRouter } from "next/navigation"
 
 type Midia = { src: string; type: "image" | "video"; label: string }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/servicos-graficos/cartao-01.jpg", type: "image", label: "Cartão 01" },
+  { src: "/portfolio/servicos-graficos/cartao-boop-4x4.jpg", type: "image", label: "Cartão Boop 4x4" },
+  { src: "/portfolio/servicos-graficos/flyer-4x0.jpg", type: "image", label: "Flyer 4x0" },
+  { src: "/portfolio/servicos-graficos/flyer-bela.jpg", type: "image", label: "Flyer Bela" },
+  { src: "/portfolio/servicos-graficos/flyer.jpg", type: "image", label: "Flyer" },
+]
+
 export default function Page() {
-
   const router = useRouter()
-
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/servicos-graficos"),
-        { cache: "no-store" }
-      )
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
   useEffect(() => {
@@ -34,7 +33,6 @@ export default function Page() {
   return (
     <main style={{ background: "#eef2f7", minHeight: "100vh" }}>
       <style>{`
-
         .wrap{
           max-width:1200px;
           margin:0 auto;
@@ -114,7 +112,7 @@ export default function Page() {
         @media (max-width: 900px){ .thumb{ height: 280px; } }
         @media (max-width: 520px){ .thumb{ height: 240px; } }
 
-        .thumb img, .thumb video{
+        .thumb img{
           position:absolute;
           inset:0;
           width:100%;
@@ -123,36 +121,12 @@ export default function Page() {
           display:block;
         }
 
-        .playBadge{
-          position:absolute;
-          left:12px;
-          top:12px;
-          background: rgba(0,0,0,.55);
-          color:#fff;
-          font-weight:900;
-          font-size:12px;
-          padding:8px 10px;
-          border-radius:999px;
-          border:1px solid rgba(255,255,255,.18);
-          backdrop-filter: blur(6px);
-          z-index:2;
-        }
-
         .cap{
           padding: 12px 12px 14px;
           font-weight: 900;
           color:#0f172a;
           font-size: 13px;
           letter-spacing: .02em;
-        }
-
-        .empty{
-          background:#fff;
-          border-radius:16px;
-          padding:18px;
-          border:1px solid rgba(15,23,42,.06);
-          color:#64748b;
-          text-align:center;
         }
 
         .lb{
@@ -216,13 +190,11 @@ export default function Page() {
           font-weight: 900;
           z-index:2;
         }
-
       `}</style>
 
       <div className="wrap">
-
         <div className="topBar">
-          <button className="btnVoltar" onClick={() => router.back()}>
+          <button className="btnVoltar" onClick={() => router.back()} type="button">
             ← Voltar
           </button>
         </div>
@@ -233,56 +205,38 @@ export default function Page() {
           Cartões de visita • Panfletos • Flyers • Pastas • Impressos personalizados
         </div>
 
-        {midias.length === 0 ? (
-          <div className="empty">
-            Nenhuma mídia encontrada em <b>public/portfolio/servicos-graficos/</b>
-          </div>
-        ) : (
-          <div className="grid">
-            {midias.map((m) => (
-              <div
-                key={m.src}
-                className="card"
-                onClick={() => setActive(m)}
-                role="button"
-                title={m.label}
-              >
-                <div className="thumb">
-                  {m.type === "image" ? (
-                    <img src={m.src} alt={m.label || "Serviços Gráficos"} loading="lazy" />
-                  ) : (
-                    <>
-                      <span className="playBadge">▶ VÍDEO</span>
-                      <video src={m.src} muted playsInline preload="metadata" />
-                    </>
-                  )}
-                </div>
-
-                <div className="cap">{m.label}</div>
+        <div className="grid">
+          {midias.map((m) => (
+            <div
+              key={m.src}
+              className="card"
+              onClick={() => setActive(m)}
+              role="button"
+              title={m.label}
+            >
+              <div className="thumb">
+                <img src={m.src} alt={m.label || "Serviços Gráficos"} loading="lazy" />
               </div>
-            ))}
-          </div>
-        )}
+
+              <div className="cap">{m.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {active && (
         <div className="lb" onClick={() => setActive(null)}>
           <div className="lbBox" onClick={(e) => e.stopPropagation()}>
-
-            <button className="lbClose" onClick={() => setActive(null)}>✕</button>
+            <button className="lbClose" onClick={() => setActive(null)} type="button">
+              ✕
+            </button>
 
             <div className="lbTitle">{active.label}</div>
 
-            {active.type === "image" ? (
-              <img className="lbMedia" src={active.src} alt={active.label} />
-            ) : (
-              <video className="lbMedia" src={active.src} controls autoPlay />
-            )}
-
+            <img className="lbMedia" src={active.src} alt={active.label} />
           </div>
         </div>
       )}
-
     </main>
   )
 }
