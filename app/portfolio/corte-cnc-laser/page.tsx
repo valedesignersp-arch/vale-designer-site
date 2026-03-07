@@ -5,20 +5,21 @@ import { useRouter } from "next/navigation"
 
 type Midia = { src: string; type: "image" | "video"; label: string }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/corte-cnc-laser/corte-acm.jpeg", type: "image", label: "Corte ACM" },
+  { src: "/portfolio/corte-cnc-laser/corte-laser.mp4", type: "video", label: "Corte Laser" },
+  { src: "/portfolio/corte-cnc-laser/corte-pvc-02.jpg", type: "image", label: "Corte PVC 02" },
+  { src: "/portfolio/corte-cnc-laser/corte-pvc.mp4", type: "video", label: "Corte PVC" },
+  { src: "/portfolio/corte-cnc-laser/corte-vivo.mp4", type: "video", label: "Corte Vivo" },
+]
+
 export default function Page() {
   const router = useRouter()
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/corte-cnc-laser"),
-        { cache: "no-store" }
-      )
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
   useEffect(() => {
@@ -125,15 +126,6 @@ export default function Page() {
           letter-spacing: .02em;
         }
 
-        .empty{
-          background:#fff;
-          border-radius:16px;
-          padding:18px;
-          border:1px solid rgba(15,23,42,.06);
-          color:#64748b;
-          text-align:center;
-        }
-
         .lb{
           position:fixed; inset:0;
           z-index:99999;
@@ -195,7 +187,6 @@ export default function Page() {
       `}</style>
 
       <div className="wrap">
-
         <div className="topBar">
           <button
             onClick={() => router.back()}
@@ -212,36 +203,30 @@ export default function Page() {
           Corte em ACM • MDF • PVC • Acrílico • Peças personalizadas
         </div>
 
-        {midias.length === 0 ? (
-          <div className="empty">
-            Nenhuma mídia encontrada em <b>public/portfolio/corte-cnc-laser/</b>
-          </div>
-        ) : (
-          <div className="grid">
-            {midias.map((m) => (
-              <div
-                key={m.src}
-                className="card"
-                onClick={() => setActive(m)}
-                role="button"
-                title={m.label}
-              >
-                <div className="thumb">
-                  {m.type === "image" ? (
-                    <img src={m.src} alt={m.label || "Corte CNC e Laser"} loading="lazy" />
-                  ) : (
-                    <>
-                      <span className="playBadge">▶ VÍDEO</span>
-                      <video src={m.src} muted playsInline preload="metadata" />
-                    </>
-                  )}
-                </div>
-
-                <div className="cap">{m.label}</div>
+        <div className="grid">
+          {midias.map((m) => (
+            <div
+              key={m.src}
+              className="card"
+              onClick={() => setActive(m)}
+              role="button"
+              title={m.label}
+            >
+              <div className="thumb">
+                {m.type === "image" ? (
+                  <img src={m.src} alt={m.label || "Corte CNC e Laser"} loading="lazy" />
+                ) : (
+                  <>
+                    <span className="playBadge">▶ VÍDEO</span>
+                    <video src={m.src} muted playsInline preload="metadata" />
+                  </>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+
+              <div className="cap">{m.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {active && (
