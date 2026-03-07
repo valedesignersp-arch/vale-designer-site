@@ -9,21 +9,25 @@ type Midia = {
   label: string
 }
 
+const MIDIAS: Midia[] = [
+  { src: "/portfolio/coberturas/cobertura-aveolar.jpg", type: "image", label: "Cobertura Aveolar" },
+  { src: "/portfolio/coberturas/cobertura-poli.jpg", type: "image", label: "Cobertura Poli" },
+  { src: "/portfolio/coberturas/IMG_20200130_121031.jpg", type: "image", label: "Cobertura 01" },
+  { src: "/portfolio/coberturas/IMG_20200130_162002.jpg", type: "image", label: "Cobertura 02" },
+  { src: "/portfolio/coberturas/IMG_20200130_162010.jpg", type: "image", label: "Cobertura 03" },
+  { src: "/portfolio/coberturas/IMG_20200130_171120.jpg", type: "image", label: "Cobertura 04" },
+  { src: "/portfolio/coberturas/IMG_20200130_171153.jpg", type: "image", label: "Cobertura 05" },
+  { src: "/portfolio/coberturas/IMG_20200130_171221.jpg", type: "image", label: "Cobertura 06" },
+  { src: "/portfolio/coberturas/IMG_20211202_170123.jpg", type: "image", label: "Cobertura 07" },
+]
+
 export default function Page() {
   const router = useRouter()
   const [midias, setMidias] = useState<Midia[]>([])
   const [active, setActive] = useState<Midia | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(
-        "/api/list-media?folder=" + encodeURIComponent("portfolio/coberturas"),
-        { cache: "no-store" }
-      )
-
-      const data = await res.json()
-      setMidias(Array.isArray(data.midias) ? data.midias : [])
-    })()
+    setMidias(MIDIAS)
   }, [])
 
   return (
@@ -192,8 +196,7 @@ export default function Page() {
                 title={m.label}
               >
                 <div className="thumb">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.src} alt={m.label} />
+                  <img src={m.src} alt={m.label} loading="lazy" />
                 </div>
 
                 <div className="cap">
@@ -208,8 +211,6 @@ export default function Page() {
       {active && (
         <div className="lb" onClick={() => setActive(null)}>
           <span className="close">✕</span>
-
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={active.src} alt={active.label} />
         </div>
       )}
