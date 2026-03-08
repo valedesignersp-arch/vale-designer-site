@@ -38,80 +38,76 @@ export default function ContatosPage() {
   const [email, setEmail] = useState("")
   const [assunto, setAssunto] = useState("Orçamento")
   const [mensagem, setMensagem] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; text: string } | null>(null)
 
   const telMasked = useMemo(() => normalizePhoneBR(telefone), [telefone])
 
-  function isFormValid() {
-    if (!nome.trim()) {
-      alert("Preencha seu nome.")
-      return false
-    }
-    if (onlyDigits(telefone).length < 10) {
-      alert("Informe um telefone válido (com DDD).")
-      return false
-    }
-    if (email && !/^\S+@\S+\.\S+$/.test(email)) {
-      alert("Informe um e-mail válido.")
-      return false
-    }
-    if (!mensagem.trim()) {
-      alert("Escreva sua mensagem.")
-      return false
-    }
-    return true
-  }
-
-  function buildWhatsAppText() {
-    const text = `*CONTATO — SITE (${CONFIG.empresa})*
-*Nome:* ${nome || "-"}
-*Telefone:* ${telMasked || "-"}
-*E-mail:* ${email || "-"}
-*Assunto:* ${assunto || "-"}
-
-*Mensagem:*
-${mensagem || "-"}
-
-Enviado pelo formulário do site.`
-    return encodeURIComponent(text)
-  }
-
-  function buildMailSubject() {
-    return encodeURIComponent(`${assunto} - Contato pelo site - ${CONFIG.empresa}`)
-  }
-
-  function buildMailBody() {
-    const body = `Novo contato enviado pelo site.
-
-Nome: ${nome || "-"}
-Telefone: ${telMasked || "-"}
-E-mail: ${email || "-"}
-Assunto: ${assunto || "-"}
-
-Mensagem:
-${mensagem || "-"}
-
----
-Enviado pelo formulário do site ${CONFIG.empresa}.`
-
-    return encodeURIComponent(body)
-  }
-
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    setFeedback(null)
 
-    if (!isFormValid()) return
+    if (!nome.trim()) {
+      setFeedback({ type: "error", text: "Preencha seu nome." })
+      return
+    }
 
-    const wa = `https://wa.me/${CONFIG.whatsapp}?text=${buildWhatsAppText()}`
-    window.open(wa, "_blank", "noopener,noreferrer")
-  }
+    if (onlyDigits(telefone).length < 10) {
+      setFeedback({ type: "error", text: "Informe um telefone válido com DDD." })
+      return
+    }
 
-  function handleEmailClick(e: React.MouseEvent<HTMLAnchorElement>) {
-    if (!isFormValid()) {
-      e.preventDefault()
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+      setFeedback({ type: "error", text: "Informe um e-mail válido." })
+      return
+    }
+
+    if (!mensagem.trim()) {
+      setFeedback({ type: "error", text: "Escreva sua mensagem." })
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const res = await fetch("/api/contato", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nome,
+          telefone: telMasked,
+          email,
+          assunto,
+          mensagem,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || "Não foi possível enviar sua mensagem.")
+      }
+
+      setFeedback({
+        type: "success",
+        text: "Mensagem enviada com sucesso! Em breve entraremos em contato.",
+      })
+
+      setNome("")
+      setTelefone("")
+      setEmail("")
+      setAssunto("Orçamento")
+      setMensagem("")
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Não foi possível enviar sua mensagem."
+      setFeedback({ type: "error", text: message })
+    } finally {
+      setLoading(false)
     }
   }
-
-  const mailtoHref = `mailto:${CONFIG.email}?subject=${buildMailSubject()}&body=${buildMailBody()}`
 
   return (
     <main>
@@ -226,6 +222,24 @@ Enviado pelo formulário do site ${CONFIG.empresa}.`
           align-items:center;
         }
 
+        .ct-feedback{
+          margin-top: 14px;
+          padding: 12px 14px;
+          border-radius: 14px;
+          font-size: 14px;
+          font-weight: 700;
+        }
+        .ct-feedback--success{
+          background: rgba(34,197,94,.10);
+          color: #166534;
+          border: 1px solid rgba(34,197,94,.22);
+        }
+        .ct-feedback--error{
+          background: rgba(239,68,68,.10);
+          color: #991b1b;
+          border: 1px solid rgba(239,68,68,.20);
+        }
+
         .ct-side{
           display:flex;
           flex-direction:column;
@@ -303,7 +317,7 @@ Enviado pelo formulário do site ${CONFIG.empresa}.`
         <header className="ct-head">
           <h1 className="h2 ct-title">Contatos</h1>
           <p className="ct-sub">
-            Preencha o formulário para enviar sua mensagem. Você pode escolher enviar pelo WhatsApp ou por e-mail.
+            Preencha o formulário para enviar sua mensagem. Nossa equipe retornará o mais rápido possível.
           </p>
         </header>
 
@@ -312,7 +326,7 @@ Enviado pelo formulário do site ${CONFIG.empresa}.`
             <div className="ct-cardHead">
               <h2 className="ct-cardTitle">Enviar mensagem</h2>
               <p className="ct-cardSub">
-                Preencha seus dados para contato.
+                Envio direto pelo site, com confirmação real.
               </p>
             </div>
 
@@ -383,18 +397,22 @@ Enviado pelo formulário do site ${CONFIG.empresa}.`
                 </div>
 
                 <div className="ct-formActions">
-                  <button className="btn-green" type="submit">
-                    Enviar no WhatsApp
+                  <button className="btn-green" type="submit" disabled={loading}>
+                    {loading ? "Enviando..." : "Enviar mensagem"}
                   </button>
-
-                  <a
-                    className="ct-btnOutline"
-                    href={mailtoHref}
-                    onClick={handleEmailClick}
-                  >
-                    Enviar por e-mail
-                  </a>
                 </div>
+
+                {feedback && (
+                  <div
+                    className={`ct-feedback ${
+                      feedback.type === "success"
+                        ? "ct-feedback--success"
+                        : "ct-feedback--error"
+                    }`}
+                  >
+                    {feedback.text}
+                  </div>
+                )}
               </form>
             </div>
           </div>
