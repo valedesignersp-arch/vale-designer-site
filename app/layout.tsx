@@ -1,5 +1,6 @@
 import "./globals.css"
 import type { Metadata } from "next"
+import Script from "next/script"
 import { Plus_Jakarta_Sans } from "next/font/google"
 import SiteHeader from "./components/SiteHeader"
 import HeroCarousel from "./components/HeroCarousel"
@@ -12,7 +13,7 @@ const fontSans = Plus_Jakarta_Sans({
 })
 
 const SITE_NAME = "Vale Designer"
-const DOMAIN = "https://www.valedesigner.com.br" // ✅ TROQUE se ainda não tiver
+const DOMAIN = "https://www.valedesigner.com.br"
 const PHONE = "+55 12 98807-5372"
 const WHATSAPP = "https://wa.me/5512988075372"
 const INSTAGRAM = "https://instagram.com/valedesignersp"
@@ -69,7 +70,7 @@ export const metadata: Metadata = {
       "Fachadas em ACM, Letras Caixa, Adesivagem, Placas e Impressão Digital. Atendimento em Jacareí e região do Vale do Paraíba.",
     images: [
       {
-        url: "/og.jpg", // ✅ crie esse arquivo em /public/og.jpg (1200x630)
+        url: "/og.jpg",
         width: 1200,
         height: 630,
         alt: `${SITE_NAME} - Comunicação Visual`,
@@ -85,7 +86,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png", // opcional
+    apple: "/apple-touch-icon.png",
   },
 }
 
@@ -114,9 +115,6 @@ function LocalBusinessJsonLd() {
       { "@type": "City", name: "Caraguatatuba" },
     ],
     sameAs: [WHATSAPP, INSTAGRAM, FACEBOOK],
-    // ✅ Se você tiver Google Maps/Perfil da Empresa, coloque aqui:
-    // hasMap: "https://www.google.com/maps?cid=...",
-    // geo: { "@type": "GeoCoordinates", latitude: -23.305, longitude: -45.965 },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -143,7 +141,6 @@ function LocalBusinessJsonLd() {
   return (
     <script
       type="application/ld+json"
-      // ✅ evita escape e mantém JSON puro
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
   )
@@ -153,7 +150,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-br" className={fontSans.variable}>
       <body className={fontSans.className}>
-        {/* ✅ Schema LocalBusiness (SEO local forte) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZTJ8C0WST4"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ZTJ8C0WST4');
+          `}
+        </Script>
+
         <LocalBusinessJsonLd />
 
         <SiteHeader />
