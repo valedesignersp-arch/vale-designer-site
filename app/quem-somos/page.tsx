@@ -1,11 +1,10 @@
 // app/quem-somos/page.tsx
 import type { Metadata } from "next"
-import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "Quem Somos | Vale Designer Comunicação Visual",
   description:
-    "Vale Designer Comunicação Visual: fachadas em ACM, letras caixa iluminadas, impressão 3D aplicada à comunicação visual, corte CNC Router, corte a laser, impressão digital, adesivos e lonas. Qualidade premium há mais de 15 anos.",
+    "Vale Designer Comunicação Visual: fachadas em ACM, letras caixa iluminadas, impressão 3D aplicada à comunicação visual, corte CNC Router, corte a laser, impressão digital, adesivos e lonas. Qualidade premium há mais de 16 anos.",
 }
 
 const CONFIG = {
@@ -21,9 +20,6 @@ const CONFIG = {
 const WA = `https://wa.me/${CONFIG.whatsapp}`
 const waMsg = (t: string) => `${WA}?text=${encodeURIComponent(t)}`
 
-// ✅ Troque para: "/institucional/quem-somos.jpg" quando você colocar a foto nessa pasta
-const ABOUT_IMAGE = "/hero/banner2.jpg"
-
 export default function QuemSomosPage() {
   return (
     <main className="page">
@@ -33,10 +29,8 @@ export default function QuemSomosPage() {
         a{text-decoration:none;color:inherit}
         .wrap{width:min(1180px, 92vw);margin:0 auto}
 
-        /* Espaço abaixo do HERO global (layout) */
         .afterHero{ padding: 26px 0 18px; position:relative; }
 
-        /* fundo “premium” leve */
         .afterHero::before{
           content:"";
           position:absolute;
@@ -57,6 +51,7 @@ export default function QuemSomosPage() {
           font-weight: 950;
           letter-spacing: -0.02em;
         }
+
         .sectionSub{
           position:relative;
           text-align:center;
@@ -66,13 +61,14 @@ export default function QuemSomosPage() {
           margin-top: -2px;
           letter-spacing: .01em;
         }
+
         .divider{
-          height:1px;background: rgba(15,31,58,.12);
+          height:1px;
+          background: rgba(15,31,58,.12);
           margin: 16px auto 18px;
           width:min(1100px, 92vw);
         }
 
-        /* layout premium em 2 colunas */
         .aboutGrid{
           position:relative;
           display:grid;
@@ -92,7 +88,9 @@ export default function QuemSomosPage() {
         .pad{padding: 20px;}
 
         .tag{
-          display:inline-flex;align-items:center;gap:10px;
+          display:inline-flex;
+          align-items:center;
+          gap:10px;
           background: rgba(15,31,58,.05);
           border:1px solid rgba(15,31,58,.10);
           color:#0f1f3a;
@@ -104,6 +102,7 @@ export default function QuemSomosPage() {
           border-radius: 999px;
           margin-bottom: 14px;
         }
+
         .tag b{color:#0f1f3a}
 
         .lead{
@@ -112,44 +111,55 @@ export default function QuemSomosPage() {
           line-height: 1.78;
           margin-bottom: 12px;
         }
+
         .lead strong{color:#0f1f3a}
 
-        /* stats (cara de empresa grande) */
         .stats{
           display:grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 10px;
           margin-top: 12px;
         }
+
         .stat{
           background: #fff;
           border: 1px solid rgba(2,6,23,.10);
           border-radius: 16px;
           box-shadow: var(--shadow-sm);
-          padding: 12px;
+          padding: 14px;
         }
+
+        .stat.highlight{
+          background:
+            radial-gradient(200px 80px at 20% 0%, rgba(181,214,0,.12), transparent 70%),
+            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          border: 1px solid rgba(181,214,0,.24);
+        }
+
         .stat b{
           display:block;
-          font-size:16px;
-          font-weight:900;
+          font-size:18px;
+          font-weight:950;
           color:#0f1f3a;
           margin-bottom:4px;
+          letter-spacing:-0.02em;
         }
+
         .stat span{
           display:block;
           font-size:12px;
           font-weight:700;
           color: var(--muted);
-          line-height:1.2;
+          line-height:1.25;
         }
 
-        /* blocos de diferencial */
         .list{
           display:flex;
           flex-direction:column;
           gap: 12px;
           margin-top: 14px;
         }
+
         .item{
           display:flex;
           gap: 12px;
@@ -159,13 +169,17 @@ export default function QuemSomosPage() {
           border: 1px solid rgba(2,6,23,.08);
           background: linear-gradient(180deg, rgba(181,214,0,.08), rgba(255,255,255,0));
         }
+
         .dot{
-          width:10px;height:10px;border-radius:50%;
+          width:10px;
+          height:10px;
+          border-radius:50%;
           background: var(--green);
           margin-top: 6px;
           box-shadow: 0 12px 26px rgba(181,214,0,.20);
           flex: 0 0 auto;
         }
+
         .item strong{
           display:block;
           color:#0f1f3a;
@@ -173,6 +187,7 @@ export default function QuemSomosPage() {
           font-size:13.5px;
           margin-bottom:4px
         }
+
         .item span{
           display:block;
           color: var(--muted);
@@ -181,13 +196,13 @@ export default function QuemSomosPage() {
           line-height:1.35
         }
 
-        /* chips (serviços) */
         .chips{
           display:flex;
           flex-wrap:wrap;
           gap:10px;
           margin-top: 16px;
         }
+
         .chip{
           display:inline-flex;
           align-items:center;
@@ -202,13 +217,15 @@ export default function QuemSomosPage() {
           color:#0f1f3a;
           white-space:nowrap;
         }
+
         .chip i{
-          width:8px;height:8px;border-radius:50%;
+          width:8px;
+          height:8px;
+          border-radius:50%;
           background: var(--green);
           display:inline-block;
         }
 
-        /* ====== CARD DA FOTO PREMIUM ====== */
         .photoHead{
           padding: 16px 16px 14px;
           border-bottom:1px solid rgba(2,6,23,.08);
@@ -218,11 +235,23 @@ export default function QuemSomosPage() {
           gap:12px;
           background: linear-gradient(180deg, rgba(15,31,58,.03), rgba(255,255,255,0));
         }
-        .photoHead strong{font-weight:900;color:#0f1f3a}
-        .photoHead small{display:block;margin-top:4px;color: var(--muted);font-weight:700;font-size:12px}
+
+        .photoHead strong{
+          font-weight:900;
+          color:#0f1f3a
+        }
+
+        .photoHead small{
+          display:block;
+          margin-top:4px;
+          color: var(--muted);
+          font-weight:700;
+          font-size:12px
+        }
 
         .pill{
-          font-size:11px;font-weight:900;
+          font-size:11px;
+          font-weight:900;
           color:#20310a;
           background: linear-gradient(180deg, #c8ea1f, #a9cc00);
           padding: 7px 10px;
@@ -230,49 +259,6 @@ export default function QuemSomosPage() {
           border:1px solid rgba(0,0,0,.18);
           white-space:nowrap;
           box-shadow: 0 12px 28px rgba(181,214,0,.22);
-        }
-
-        .imgWrap{
-          position:relative;
-          height: 320px;
-          background:#0b1731;
-        }
-        .imgOverlay{
-          position:absolute;
-          inset:0;
-          background:
-            linear-gradient(180deg, rgba(2,6,23,.10) 0%, rgba(2,6,23,.55) 100%),
-            radial-gradient(600px 220px at 20% 10%, rgba(181,214,0,.18), transparent 60%);
-          pointer-events:none;
-        }
-
-        .imgBadge{
-          position:absolute;
-          left:14px;
-          bottom:14px;
-          display:flex;
-          gap:10px;
-          flex-wrap:wrap;
-          z-index:3;
-        }
-        .badge{
-          background: rgba(255,255,255,.10);
-          border: 1px solid rgba(255,255,255,.16);
-          backdrop-filter: blur(10px);
-          color:#fff;
-          font-weight:900;
-          font-size:11px;
-          letter-spacing:.06em;
-          text-transform:uppercase;
-          padding: 9px 10px;
-          border-radius: 999px;
-          display:inline-flex;
-          align-items:center;
-          gap:8px;
-        }
-        .badgeDot{
-          width:7px;height:7px;border-radius:999px;background: var(--green);
-          box-shadow: 0 10px 20px rgba(181,214,0,.25);
         }
 
         .photoFooter{
@@ -284,8 +270,18 @@ export default function QuemSomosPage() {
           flex-wrap:wrap;
           border-top:1px solid rgba(2,6,23,.08);
         }
-        .miniLine{font-size:12px;font-weight:900;color:#0f1f3a}
-        .miniSub{font-size:12px;font-weight:700;color: var(--muted)}
+
+        .miniLine{
+          font-size:12px;
+          font-weight:900;
+          color:#0f1f3a
+        }
+
+        .miniSub{
+          font-size:12px;
+          font-weight:700;
+          color: var(--muted)
+        }
 
         .btnGreen{
           height: 40px;
@@ -304,10 +300,10 @@ export default function QuemSomosPage() {
           box-shadow: 0 12px 28px rgba(181,214,0,.22);
         }
 
-        /* ====== MISSÃO • VISÃO • VALORES ====== */
         .mvv{
           margin-top: 16px;
         }
+
         .mvvHead{
           display:flex;
           align-items:flex-end;
@@ -316,22 +312,26 @@ export default function QuemSomosPage() {
           flex-wrap:wrap;
           margin-bottom: 10px;
         }
+
         .mvvTitle{
           font-weight: 950;
           color:#0f1f3a;
           letter-spacing:-0.02em;
           font-size: 18px;
         }
+
         .mvvSub{
           color: var(--muted);
           font-weight: 700;
           font-size: 12px;
         }
+
         .mvvGrid{
           display:grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 10px;
         }
+
         .mvvCard{
           background:#fff;
           border: 1px solid rgba(2,6,23,.10);
@@ -339,6 +339,7 @@ export default function QuemSomosPage() {
           box-shadow: var(--shadow-sm);
           padding: 14px;
         }
+
         .mvvKicker{
           display:inline-flex;
           align-items:center;
@@ -354,6 +355,7 @@ export default function QuemSomosPage() {
           color:#0f1f3a;
           margin-bottom: 10px;
         }
+
         .mvvKicker i{
           width: 8px;
           height: 8px;
@@ -362,6 +364,7 @@ export default function QuemSomosPage() {
           display:inline-block;
           box-shadow: 0 10px 20px rgba(181,214,0,.25);
         }
+
         .mvvCard h3{
           margin: 0 0 6px;
           font-size: 14px;
@@ -369,6 +372,7 @@ export default function QuemSomosPage() {
           color:#0f1f3a;
           letter-spacing: -0.01em;
         }
+
         .mvvCard p{
           margin: 0;
           color: var(--muted);
@@ -377,26 +381,169 @@ export default function QuemSomosPage() {
           line-height: 1.55;
         }
 
-        /* RESPONSIVO */
+        .institutionalCard{
+          background:
+            radial-gradient(500px 180px at 10% 0%, rgba(181,214,0,.10), transparent 60%),
+            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .instBody{
+          padding: 18px 16px 16px;
+        }
+
+        .instHero{
+          padding: 4px 2px 16px;
+          border-bottom: 1px solid rgba(2,6,23,.08);
+        }
+
+        .instKicker{
+          display:inline-flex;
+          align-items:center;
+          gap:8px;
+          padding: 8px 12px;
+          border-radius:999px;
+          background: rgba(15,31,58,.05);
+          border:1px solid rgba(15,31,58,.10);
+          color:#0f1f3a;
+          font-size:11px;
+          font-weight:900;
+          letter-spacing:.08em;
+          text-transform:uppercase;
+          margin-bottom:12px;
+        }
+
+        .instTitle{
+          margin:0 0 10px;
+          color:#0f1f3a;
+          font-size: clamp(24px, 2.2vw, 32px);
+          line-height:1.02;
+          font-weight:950;
+          letter-spacing:-0.03em;
+        }
+
+        .instText{
+          margin:0;
+          color: var(--muted);
+          font-size:13.5px;
+          line-height:1.75;
+          font-weight:700;
+        }
+
+        .instMetrics{
+          display:grid;
+          gap:10px;
+          margin-top:16px;
+        }
+
+        .instMetric{
+          padding:14px;
+          border-radius:16px;
+          border:1px solid rgba(2,6,23,.08);
+          background:#fff;
+          box-shadow: var(--shadow-sm);
+        }
+
+        .instMetric b{
+          display:block;
+          color:#0f1f3a;
+          font-size:14px;
+          font-weight:950;
+          margin-bottom:4px;
+        }
+
+        .instMetric span{
+          display:block;
+          color: var(--muted);
+          font-size:12.8px;
+          line-height:1.55;
+          font-weight:700;
+        }
+
+        .instNumbers{
+          display:grid;
+          grid-template-columns: 1fr 1fr;
+          gap:10px;
+          margin-top:16px;
+        }
+
+        .instNumber{
+          padding:16px;
+          border-radius:18px;
+          border:1px solid rgba(181,214,0,.22);
+          background:
+            radial-gradient(180px 70px at 15% 0%, rgba(181,214,0,.14), transparent 70%),
+            linear-gradient(180deg,#ffffff 0%, #f8fafc 100%);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .instNumber b{
+          display:block;
+          color:#0f1f3a;
+          font-size:28px;
+          font-weight:1000;
+          line-height:1;
+          letter-spacing:-0.04em;
+          margin-bottom:6px;
+        }
+
+        .instNumber span{
+          display:block;
+          color: var(--muted);
+          font-size:12px;
+          font-weight:800;
+          line-height:1.35;
+          text-transform:uppercase;
+          letter-spacing:.04em;
+        }
+
+        .instBadges{
+          display:flex;
+          flex-wrap:wrap;
+          gap:10px;
+          margin-top:16px;
+        }
+
+        .instBadge{
+          display:inline-flex;
+          align-items:center;
+          gap:8px;
+          padding:10px 12px;
+          border-radius:999px;
+          border:1px solid rgba(2,6,23,.10);
+          background:#fff;
+          color:#0f1f3a;
+          font-size:11px;
+          font-weight:900;
+          letter-spacing:.05em;
+          text-transform:uppercase;
+          box-shadow: var(--shadow-sm);
+        }
+
+        .badgeDot{
+          width:7px;
+          height:7px;
+          border-radius:999px;
+          background: var(--green);
+          box-shadow: 0 10px 20px rgba(181,214,0,.25);
+        }
+
         @media(max-width: 1000px){
           .aboutGrid{grid-template-columns:1fr}
-          .imgWrap{height:300px}
         }
+
         @media(max-width: 700px){
-          .imgWrap{height:240px}
           .stats{grid-template-columns:1fr}
           .mvvGrid{grid-template-columns:1fr}
+          .instNumbers{grid-template-columns:1fr}
         }
       `}</style>
 
-      {/* ✅ SEM HEADER/HERO (vem do layout global) */}
       <section className="afterHero">
         <div className="sectionTitle">Quem Somos</div>
         <div className="sectionSub">Comunicação Visual Premium com controle total de qualidade</div>
         <div className="divider" />
 
         <div className="wrap aboutGrid">
-          {/* TEXTO + DIFERENCIAIS */}
           <div className="card pad">
             <div className="tag">
               <b>Vale Designer</b> • Comunicação Visual
@@ -417,17 +564,17 @@ export default function QuemSomosPage() {
             </p>
 
             <div className="stats" aria-label="Indicadores">
-              <div className="stat">
-                <b>15+ anos</b>
-                <span>Experiência e padrão técnico</span>
+              <div className="stat highlight">
+                <b>16+ anos</b>
+                <span>Experiência consolidada no mercado</span>
+              </div>
+              <div className="stat highlight">
+                <b>1000+ trabalhos</b>
+                <span>Projetos executados com padrão profissional</span>
               </div>
               <div className="stat">
-                <b>Fabricação</b>
-                <span>Controle total interno</span>
-              </div>
-              <div className="stat">
-                <b>Instalação</b>
-                <span>Execução segura e limpa</span>
+                <b>Fabricação própria</b>
+                <span>Controle interno de qualidade e acabamento</span>
               </div>
             </div>
 
@@ -476,7 +623,6 @@ export default function QuemSomosPage() {
               <div className="chip"><i /> Lonas</div>
             </div>
 
-            {/* ✅ MISSÃO • VISÃO • VALORES */}
             <div className="mvv" aria-label="Missão, Visão e Valores">
               <div className="mvvHead">
                 <div className="mvvTitle">Missão, Visão e Valores</div>
@@ -514,8 +660,7 @@ export default function QuemSomosPage() {
             </div>
           </div>
 
-          {/* FOTO PREMIUM */}
-          <div className="card">
+          <div className="card institutionalCard">
             <div className="photoHead">
               <div>
                 <strong>Padrão de entrega</strong>
@@ -524,20 +669,52 @@ export default function QuemSomosPage() {
               <div className="pill">Premium</div>
             </div>
 
-            <div className="imgWrap">
-              <Image
-                src={ABOUT_IMAGE}
-                alt="Produção e instalação Vale Designer"
-                fill
-                priority={false}
-                sizes="(max-width: 1000px) 92vw, 520px"
-                style={{ objectFit: "cover" }}
-              />
-              <div className="imgOverlay" />
-              <div className="imgBadge">
-                <div className="badge"><span className="badgeDot" /> Produção interna</div>
-                <div className="badge"><span className="badgeDot" /> Instalação técnica</div>
-                <div className="badge"><span className="badgeDot" /> Acabamento premium</div>
+            <div className="instBody">
+              <div className="instHero">
+                <div className="instKicker">Vale Designer</div>
+                <h3 className="instTitle">
+                  Comunicação visual com padrão técnico, organização e acabamento superior
+                </h3>
+                <p className="instText">
+                  Desenvolvemos projetos completos para empresas que buscam uma apresentação
+                  mais forte, profissional e valorizada no ponto comercial.
+                </p>
+              </div>
+
+              <div className="instNumbers">
+                <div className="instNumber">
+                  <b>16+</b>
+                  <span>Anos de experiência</span>
+                </div>
+
+                <div className="instNumber">
+                  <b>1000+</b>
+                  <span>Trabalhos realizados</span>
+                </div>
+              </div>
+
+              <div className="instMetrics">
+                <div className="instMetric">
+                  <b>Projeto</b>
+                  <span>Planejamento visual com leitura, proporção e presença de marca.</span>
+                </div>
+
+                <div className="instMetric">
+                  <b>Produção</b>
+                  <span>Fabricação com foco em precisão, padronização e acabamento limpo.</span>
+                </div>
+
+                <div className="instMetric">
+                  <b>Instalação</b>
+                  <span>Execução técnica para entregar segurança, durabilidade e impacto visual.</span>
+                </div>
+              </div>
+
+              <div className="instBadges">
+                <div className="instBadge"><span className="badgeDot" /> Produção interna</div>
+                <div className="instBadge"><span className="badgeDot" /> Instalação técnica</div>
+                <div className="instBadge"><span className="badgeDot" /> Acabamento premium</div>
+                <div className="instBadge"><span className="badgeDot" /> Atendimento consultivo</div>
               </div>
             </div>
 

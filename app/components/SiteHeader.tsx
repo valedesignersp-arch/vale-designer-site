@@ -13,9 +13,10 @@ const waMsg = (t: string) => `${WA}?text=${encodeURIComponent(t)}`
 const NAV = [
   { label: "HOME", href: "/" },
   { label: "QUEM SOMOS", href: "/quem-somos" },
-  { label: "SERVIÇOS", href: "/servicos" }, // ✅ removido o # (agora é página real)
+  { label: "SERVIÇOS", href: "/servicos" },
   { label: "CLIENTES", href: "/clientes" },
   { label: "TRABALHE CONOSCO", href: "/trabalhe-conosco" },
+  { label: "DICAS", href: "/dicas" },
   { label: "CONTATOS", href: "/contatos" },
   { label: "PORTFÓLIO", href: "/portfolio" },
 ]
@@ -23,7 +24,6 @@ const NAV = [
 export default function SiteHeader() {
   const [open, setOpen] = useState(false)
 
-  // trava scroll quando menu mobile abre
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -33,7 +33,6 @@ export default function SiteHeader() {
     }
   }, [open])
 
-  // fecha no ESC
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false)
@@ -49,9 +48,16 @@ export default function SiteHeader() {
   return (
     <header className="topbar">
       <style>{`
+        .burger{
+          display:none;
+          background:transparent;
+          border:0;
+          padding:0;
+        }
+
         /* ====== MOBILE HEADER FIX ====== */
         @media (max-width: 900px){
-          .topbar{ position: relative; z-index: 50; } /* header acima do hero */
+          .topbar{ position: relative; z-index: 50; }
 
           .topbar-in{
             height:auto !important;
@@ -59,7 +65,6 @@ export default function SiteHeader() {
             gap: 10px !important;
           }
 
-          /* esconde menu desktop e mostra burger */
           .menu{ display:none !important; }
 
           .brand img{ height: 38px !important; }
@@ -75,6 +80,7 @@ export default function SiteHeader() {
             border: 1px solid rgba(255,255,255,.10);
             cursor:pointer;
           }
+
           .burgerLines{ width:18px;height:12px;position:relative; }
           .burgerLines span{
             position:absolute;left:0;right:0;height:2px;border-radius:999px;
@@ -89,17 +95,15 @@ export default function SiteHeader() {
           .burger.open .burgerLines span:nth-child(2){ opacity:0; }
           .burger.open .burgerLines span:nth-child(3){ top:5px; transform: rotate(-45deg); }
 
-          /* overlay: acima de TUDO e sem “misturar” com o hero */
           .mOverlay{
             position:fixed; inset:0;
-            z-index:99999; /* garante acima do hero */
+            z-index:99999;
             background: rgba(0,0,0,.60);
             backdrop-filter: blur(8px);
             display:flex;
             justify-content:flex-end;
           }
 
-          /* painel com altura correta no celular (dvh) + scroll interno */
           .mPanel{
             width:min(360px, 88vw);
             height:100dvh;
@@ -109,7 +113,7 @@ export default function SiteHeader() {
             display:flex;
             flex-direction:column;
             gap: 12px;
-            overflow:hidden; /* evita “vazar” */
+            overflow:hidden;
           }
 
           .mTop{
@@ -120,6 +124,7 @@ export default function SiteHeader() {
             padding-bottom: 10px;
             border-bottom: 1px solid rgba(255,255,255,.10);
           }
+
           .mTitle{
             color:#dbe4ff;
             font-weight:900;
@@ -127,8 +132,11 @@ export default function SiteHeader() {
             font-size:12px;
             text-transform:uppercase;
           }
+
           .mClose{
-            height:38px;width:38px;border-radius:12px;
+            height:38px;
+            width:38px;
+            border-radius:12px;
             background: rgba(255,255,255,.06);
             border: 1px solid rgba(255,255,255,.10);
             color:#fff;
@@ -139,7 +147,6 @@ export default function SiteHeader() {
             font-weight:900;
           }
 
-          /* NAV com scroll (se tiver muitos itens) */
           .mNav{
             display:flex;
             flex-direction:column;
@@ -148,6 +155,7 @@ export default function SiteHeader() {
             overflow-y:auto;
             padding-right: 4px;
           }
+
           .mNav a{
             padding: 14px 14px;
             border-radius: 14px;
@@ -159,11 +167,13 @@ export default function SiteHeader() {
             letter-spacing:.06em;
             text-transform:uppercase;
           }
+
           .mNav a:active{ transform: translateY(1px); }
 
           .mCTA{
             margin-top: 10px;
           }
+
           .mCTA .btnTop{
             width:100%;
             height:46px !important;
@@ -175,12 +185,10 @@ export default function SiteHeader() {
       <div className="wrap topbar-in">
         <div className="brand">
           <Link href="/" aria-label="Ir para Home" onClick={handleNavClick}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="Vale Designer" />
           </Link>
         </div>
 
-        {/* MENU DESKTOP (igual ao seu) */}
         <nav className="menu" aria-label="Menu principal">
           {NAV.map((n) => (
             <Link key={`${n.label}-${n.href}`} href={n.href}>
@@ -198,7 +206,6 @@ export default function SiteHeader() {
           </a>
         </nav>
 
-        {/* BOTÃO MOBILE (toggle) */}
         <button
           className={`burger ${open ? "open" : ""}`}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
@@ -214,7 +221,6 @@ export default function SiteHeader() {
         </button>
       </div>
 
-      {/* MENU MOBILE */}
       {open && (
         <div
           className="mOverlay"
