@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import { useEffect, useMemo, useState, type FormEvent } from "react"
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react"
 import { CATEGORIAS } from "../dados"
 
 type Props = {
@@ -102,6 +102,62 @@ const PORTFOLIO = [
   '/portfolio/8.jpg',
 ]
 
+function CountUp({
+  end,
+  duration = 1800,
+}: {
+  end: number
+  duration?: number
+}) {
+  const [count, setCount] = useState(0)
+  const [started, setStarted] = useState(false)
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.35 }
+    )
+
+    observer.observe(el)
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!started) return
+
+    let startTime: number | null = null
+    let frameId = 0
+
+    const animate = (timestamp: number) => {
+      if (startTime === null) startTime = timestamp
+      const progress = Math.min((timestamp - startTime) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+
+      setCount(Math.round(end * eased))
+
+      if (progress < 1) {
+        frameId = window.requestAnimationFrame(animate)
+      }
+    }
+
+    frameId = window.requestAnimationFrame(animate)
+
+    return () => window.cancelAnimationFrame(frameId)
+  }, [started, end, duration])
+
+  return <div ref={ref}>+{count}</div>
+}
+
 export default function HomeClient({ scrollToId }: Props) {
   const [form, setForm] = useState({ nome: '', telefone: '', email: '', servico: '', mensagem: '' })
   const [open, setOpen] = useState(false)
@@ -200,6 +256,59 @@ export default function HomeClient({ scrollToId }: Props) {
         .section-sub strong{
           color:#334155;
           font-weight: 800;
+        }
+
+        .stats{
+          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          padding: 28px 0 22px;
+          border-bottom: 1px solid rgba(15,31,58,.08);
+        }
+        .stats-wrap{
+          width:min(1100px, 92vw);
+          margin:0 auto;
+        }
+        .stats-box{
+          background:#fff;
+          border:1px solid rgba(2,6,23,.08);
+          border-radius: 18px;
+          box-shadow: 0 16px 38px rgba(2,6,23,.08);
+          padding: 26px 12px;
+        }
+        .stats-grid{
+          display:grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0;
+          align-items:center;
+        }
+        .stat-item{
+          text-align:center;
+          padding: 8px 18px;
+          position:relative;
+        }
+        .stat-item:not(:last-child)::after{
+          content:"";
+          position:absolute;
+          right:0;
+          top:50%;
+          transform:translateY(-50%);
+          width:1px;
+          height:72px;
+          background: rgba(15,31,58,.10);
+        }
+        .stat-number{
+          font-size: clamp(40px, 6vw, 78px);
+          line-height: .95;
+          font-weight: 900;
+          letter-spacing: -0.05em;
+          color:#132d66;
+          margin-bottom: 10px;
+        }
+        .stat-label{
+          font-size: clamp(13px, 1.4vw, 16px);
+          font-weight: 800;
+          letter-spacing: 0.03em;
+          color:#7a8aa3;
+          text-transform: uppercase;
         }
 
         .services{background: #f3f5f8;padding: 18px 0 10px;}
@@ -402,13 +511,67 @@ export default function HomeClient({ scrollToId }: Props) {
           .portfolio-grid{grid-template-columns: repeat(2, 1fr)}
         }
 
+        @media(max-width: 860px){
+          .stats-grid{
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .stat-item{
+            padding: 10px 8px;
+          }
+          .stat-item:not(:last-child)::after{
+            display:none;
+          }
+          .stats-box{
+            padding: 20px 12px;
+          }
+        }
+
         @media(max-width: 520px){
           .services-grid{grid-template-columns: repeat(2, 1fr)}
           .pf img{height:160px}
           .client-logo{height: 32px;}
           .clients-marquee{gap: 22px;}
+          .stats{
+            padding: 20px 0 14px;
+          }
+          .stat-number{
+            font-size: 48px;
+          }
+          .stat-label{
+            font-size: 13px;
+          }
         }
       `}</style>
+
+      <section className="stats" aria-label="Números da Vale Designer">
+        <div className="stats-wrap">
+          <div className="stats-box">
+            <div className="stats-grid">
+              <div className="stat-item">
+                <div className="stat-number">
+                  <CountUp end={1200} duration={1900} />
+                </div>
+                <div className="stat-label">Projetos Realizados</div>
+              </div>
+
+              <div className="stat-item">
+                <div className="stat-number">
+                  <CountUp end={15} duration={1400} />
+                </div>
+                <div className="stat-label">Anos de Experiência</div>
+              </div>
+
+              <div className="stat-item">
+                <div className="stat-number">
+                  <CountUp end={300} duration={1700} />
+                </div>
+                <div className="stat-label">Empresas Atendidas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section id="servicos" className="services section">
         <div className="section-title">Nossos Serviços</div>
