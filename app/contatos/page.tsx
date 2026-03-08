@@ -41,9 +41,28 @@ export default function ContatosPage() {
 
   const telMasked = useMemo(() => normalizePhoneBR(telefone), [telefone])
 
+  function isFormValid() {
+    if (!nome.trim()) {
+      alert("Preencha seu nome.")
+      return false
+    }
+    if (onlyDigits(telefone).length < 10) {
+      alert("Informe um telefone válido (com DDD).")
+      return false
+    }
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+      alert("Informe um e-mail válido.")
+      return false
+    }
+    if (!mensagem.trim()) {
+      alert("Escreva sua mensagem.")
+      return false
+    }
+    return true
+  }
+
   function buildWhatsAppText() {
-    const text =
-`*CONTATO — SITE (${CONFIG.empresa})*
+    const text = `*CONTATO — SITE (${CONFIG.empresa})*
 *Nome:* ${nome || "-"}
 *Telefone:* ${telMasked || "-"}
 *E-mail:* ${email || "-"}
@@ -56,17 +75,43 @@ Enviado pelo formulário do site.`
     return encodeURIComponent(text)
   }
 
+  function buildMailSubject() {
+    return encodeURIComponent(`${assunto} - Contato pelo site - ${CONFIG.empresa}`)
+  }
+
+  function buildMailBody() {
+    const body = `Novo contato enviado pelo site.
+
+Nome: ${nome || "-"}
+Telefone: ${telMasked || "-"}
+E-mail: ${email || "-"}
+Assunto: ${assunto || "-"}
+
+Mensagem:
+${mensagem || "-"}
+
+---
+Enviado pelo formulário do site ${CONFIG.empresa}.`
+
+    return encodeURIComponent(body)
+  }
+
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    if (!nome.trim()) return alert("Preencha seu nome.")
-    if (onlyDigits(telefone).length < 10) return alert("Informe um telefone válido (com DDD).")
-    if (email && !/^\S+@\S+\.\S+$/.test(email)) return alert("Informe um e-mail válido.")
-    if (!mensagem.trim()) return alert("Escreva sua mensagem.")
+    if (!isFormValid()) return
 
     const wa = `https://wa.me/${CONFIG.whatsapp}?text=${buildWhatsAppText()}`
     window.open(wa, "_blank", "noopener,noreferrer")
   }
+
+  function handleEmailClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!isFormValid()) {
+      e.preventDefault()
+    }
+  }
+
+  const mailtoHref = `mailto:${CONFIG.email}?subject=${buildMailSubject()}&body=${buildMailBody()}`
 
   return (
     <main>
@@ -181,7 +226,6 @@ Enviado pelo formulário do site.`
           align-items:center;
         }
 
-        /* Side */
         .ct-side{
           display:flex;
           flex-direction:column;
@@ -259,17 +303,16 @@ Enviado pelo formulário do site.`
         <header className="ct-head">
           <h1 className="h2 ct-title">Contatos</h1>
           <p className="ct-sub">
-            Preencha o formulário para enviar sua mensagem. Ao clicar em enviar, abrimos seu WhatsApp com tudo pronto.
+            Preencha o formulário para enviar sua mensagem. Você pode escolher enviar pelo WhatsApp ou por e-mail.
           </p>
         </header>
 
         <section className="ct-grid">
-          {/* FORM */}
           <div className="ct-card">
             <div className="ct-cardHead">
               <h2 className="ct-cardTitle">Enviar mensagem</h2>
               <p className="ct-cardSub">
-                Responde mais rápido no WhatsApp.
+                Preencha seus dados para contato.
               </p>
             </div>
 
@@ -346,16 +389,16 @@ Enviado pelo formulário do site.`
 
                   <a
                     className="ct-btnOutline"
-                    href={`mailto:${CONFIG.email}?subject=${encodeURIComponent("Contato pelo site")}`}
+                    href={mailtoHref}
+                    onClick={handleEmailClick}
                   >
-                    Prefiro e-mail
+                    Enviar por e-mail
                   </a>
                 </div>
               </form>
             </div>
           </div>
 
-          {/* SIDE: CEL + MAPA */}
           <aside className="ct-side">
             <div className="ct-sideBox">
               <div className="ct-sideTitle">Contato rápido</div>
@@ -375,8 +418,16 @@ Enviado pelo formulário do site.`
                   WhatsApp
                 </a>
 
-                <a className="ct-btnOutline" href={`tel:${onlyDigits(CONFIG.telefone1)}`}>Ligar 1</a>
-                <a className="ct-btnOutline" href={CONFIG.mapsLink} target="_blank" rel="noopener noreferrer">
+                <a className="ct-btnOutline" href={`tel:${onlyDigits(CONFIG.telefone1)}`}>
+                  Ligar 1
+                </a>
+
+                <a
+                  className="ct-btnOutline"
+                  href={CONFIG.mapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Abrir no Maps
                 </a>
               </div>
