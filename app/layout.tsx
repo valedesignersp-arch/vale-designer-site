@@ -4,6 +4,7 @@ import Script from "next/script"
 import { Plus_Jakarta_Sans } from "next/font/google"
 import SiteHeader from "./components/SiteHeader"
 import HeroCarousel from "./components/HeroCarousel"
+import WhatsAppChat from "./components/WhatsAppChat"
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -146,7 +147,11 @@ function LocalBusinessJsonLd() {
   )
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="pt-br" className={fontSans.variable}>
       <body className={fontSans.className}>
@@ -189,6 +194,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               >
                 <img src="/icons/whatsapp.png" alt="" />
               </a>
+
               <a
                 href={INSTAGRAM}
                 target="_blank"
@@ -198,6 +204,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               >
                 <img src="/icons/instagram.png" alt="" />
               </a>
+
               <a
                 href={FACEBOOK}
                 target="_blank"
@@ -207,6 +214,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               >
                 <img src="/icons/facebook.png" alt="" />
               </a>
+
               <a
                 href="https://tiktok.com"
                 target="_blank"
@@ -219,6 +227,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+
+        <WhatsAppChat />
       </body>
     </html>
   )
