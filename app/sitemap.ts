@@ -13,9 +13,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     {
+      url: `${baseUrl}/quem-somos`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.9,
+    },
+
+    {
       url: `${baseUrl}/dicas`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 0.9,
     },
 
@@ -41,14 +48,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     {
-      url: `${baseUrl}/servicos`,
+      url: `${baseUrl}/portfolio`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
 
     {
-      url: `${baseUrl}/portfolio`,
+      url: `${baseUrl}/servicos`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
