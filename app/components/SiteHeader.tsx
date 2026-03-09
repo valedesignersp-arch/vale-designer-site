@@ -3,13 +3,6 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-const CONFIG = {
-  whatsapp: "5512988075372",
-}
-
-const WA = `https://wa.me/${CONFIG.whatsapp}`
-const waMsg = (t: string) => `${WA}?text=${encodeURIComponent(t)}`
-
 const NAV = [
   { label: "HOME", href: "/" },
   { label: "QUEM SOMOS", href: "/quem-somos" },
@@ -18,6 +11,7 @@ const NAV = [
   { label: "TRABALHE CONOSCO", href: "/trabalhe-conosco" },
   { label: "DICAS", href: "/dicas" },
   { label: "CONTATOS", href: "/contatos" },
+  { label: "CRIAÇÃO DE SITE", href: "/criacao-de-site" },
   { label: "PORTFÓLIO", href: "/portfolio" },
 ]
 
@@ -55,19 +49,67 @@ export default function SiteHeader() {
           padding:0;
         }
 
-        /* ====== MOBILE HEADER FIX ====== */
+        .topbar-inner-desktop{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:18px;
+          width:100%;
+        }
+
+        .desktop-center{
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex:1;
+          min-width:0;
+        }
+
+        .menu{
+          display:flex;
+          align-items:center;
+          gap:16px;
+          flex-wrap:nowrap;
+          white-space:nowrap;
+        }
+
+        .menu a{
+          font-size:12px;
+          font-weight:800;
+          letter-spacing:.03em;
+        }
+
+        @media (max-width: 1180px){
+          .menu{
+            gap:12px;
+          }
+
+          .menu a{
+            font-size:11px;
+          }
+        }
+
         @media (max-width: 900px){
           .topbar{ position: relative; z-index: 50; }
 
-          .topbar-in{
-            height:auto !important;
-            padding: 14px 0 !important;
-            gap: 10px !important;
+          .topbar-inner-desktop{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
           }
 
-          .menu{ display:none !important; }
+          .desktop-center{
+            display:none !important;
+          }
 
-          .brand img{ height: 38px !important; }
+          .topbar-in{
+            height:auto !important;
+            padding:14px 0 !important;
+            gap:10px !important;
+          }
+
+          .brand img{ height:38px !important; }
 
           .burger{
             display:inline-flex !important;
@@ -169,56 +211,41 @@ export default function SiteHeader() {
           }
 
           .mNav a:active{ transform: translateY(1px); }
-
-          .mCTA{
-            margin-top: 10px;
-          }
-
-          .mCTA .btnTop{
-            width:100%;
-            height:46px !important;
-            justify-content:center !important;
-          }
         }
       `}</style>
 
       <div className="wrap topbar-in">
-        <div className="brand">
-          <Link href="/" aria-label="Ir para Home" onClick={handleNavClick}>
-            <img src="/logo.png" alt="Vale Designer" />
-          </Link>
-        </div>
-
-        <nav className="menu" aria-label="Menu principal">
-          {NAV.map((n) => (
-            <Link key={`${n.label}-${n.href}`} href={n.href}>
-              {n.label}
+        <div className="topbar-inner-desktop">
+          <div className="brand">
+            <Link href="/" aria-label="Ir para Home" onClick={handleNavClick}>
+              <img src="/logo.png" alt="Vale Designer" />
             </Link>
-          ))}
-
-          <a
-            href={waMsg("Olá! Quero um orçamento premium.")}
-            target="_blank"
-            rel="noreferrer"
-            className="btnTop"
-          >
-            Solicitar Orçamento
-          </a>
-        </nav>
-
-        <button
-          className={`burger ${open ? "open" : ""}`}
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          type="button"
-        >
-          <div className="burgerLines" aria-hidden="true">
-            <span />
-            <span />
-            <span />
           </div>
-        </button>
+
+          <div className="desktop-center">
+            <nav className="menu" aria-label="Menu principal">
+              {NAV.map((n) => (
+                <Link key={`${n.label}-${n.href}`} href={n.href}>
+                  {n.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <button
+            className={`burger ${open ? "open" : ""}`}
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            type="button"
+          >
+            <div className="burgerLines" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -246,18 +273,6 @@ export default function SiteHeader() {
                   {n.label}
                 </Link>
               ))}
-            </div>
-
-            <div className="mCTA">
-              <a
-                href={waMsg("Olá! Quero um orçamento premium.")}
-                target="_blank"
-                rel="noreferrer"
-                className="btnTop"
-                onClick={handleNavClick}
-              >
-                Solicitar Orçamento
-              </a>
             </div>
           </div>
         </div>
