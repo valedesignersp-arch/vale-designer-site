@@ -19,6 +19,7 @@ const PHONE = "+55 12 98807-5372"
 const WHATSAPP = "https://wa.me/5512988075372"
 const INSTAGRAM = "https://instagram.com/valedesignersp"
 const FACEBOOK = "https://facebook.com/valedesignersp"
+const TIKTOK = "https://www.tiktok.com/@vale.designer"
 
 const ADDRESS = {
   streetAddress: "Rua Paraguai, 58",
@@ -115,7 +116,7 @@ function LocalBusinessJsonLd() {
       { "@type": "City", name: "Taubaté" },
       { "@type": "City", name: "Caraguatatuba" },
     ],
-    sameAs: [WHATSAPP, INSTAGRAM, FACEBOOK],
+    sameAs: [WHATSAPP, INSTAGRAM, FACEBOOK, TIKTOK],
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -192,7 +193,7 @@ export default function RootLayout({
                 aria-label="WhatsApp"
                 title="WhatsApp"
               >
-                <img src="/icons/whatsapp.png" alt="" />
+                <img src="/icons/whatsapp.png" alt="WhatsApp Vale Designer" />
               </a>
 
               <a
@@ -202,7 +203,7 @@ export default function RootLayout({
                 aria-label="Instagram"
                 title="Instagram"
               >
-                <img src="/icons/instagram.png" alt="" />
+                <img src="/icons/instagram.png" alt="Instagram Vale Designer" />
               </a>
 
               <a
@@ -212,17 +213,17 @@ export default function RootLayout({
                 aria-label="Facebook"
                 title="Facebook"
               >
-                <img src="/icons/facebook.png" alt="" />
+                <img src="/icons/facebook.png" alt="Facebook Vale Designer" />
               </a>
 
               <a
-                href="https://tiktok.com"
+                href={TIKTOK}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="TikTok"
                 title="TikTok"
               >
-                <img src="/icons/tiktok.png" alt="" />
+                <img src="/icons/tiktok.png" alt="TikTok Vale Designer" />
               </a>
             </div>
           </div>
