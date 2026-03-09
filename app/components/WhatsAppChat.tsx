@@ -12,21 +12,32 @@ const LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
 
 export default function WhatsAppChat() {
   const [open, setOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    checkScreen()
+    window.addEventListener("resize", checkScreen)
+
     const timer = setTimeout(() => {
       setOpen(true)
     }, 1500)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("resize", checkScreen)
+    }
   }, [])
 
   return (
     <div
       style={{
         position: "fixed",
-        right: "18px",
-        bottom: "18px",
+        right: isMobile ? "14px" : "18px",
+        bottom: isMobile ? "14px" : "18px",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",
@@ -34,7 +45,7 @@ export default function WhatsAppChat() {
         gap: "12px",
       }}
     >
-      {open && (
+      {!isMobile && open && (
         <div
           style={{
             width: "330px",
@@ -174,26 +185,35 @@ export default function WhatsAppChat() {
         style={{
           background: "linear-gradient(180deg,#31d766,#21c45a)",
           color: "#fff",
-          padding: "14px 24px",
-          borderRadius: "999px",
-          fontWeight: 700,
-          fontSize: "15px",
           textDecoration: "none",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "10px",
+          gap: isMobile ? "0" : "10px",
           boxShadow: "0 14px 34px rgba(37,211,102,.3)",
-          minHeight: "50px",
-          minWidth: "255px",
-          maxWidth: "calc(100vw - 24px)",
-          textAlign: "center",
+          animation: "fadeUpChat .35s ease",
+          ...(isMobile
+            ? {
+                width: "58px",
+                height: "58px",
+                borderRadius: "999px",
+              }
+            : {
+                padding: "14px 24px",
+                borderRadius: "999px",
+                fontWeight: 700,
+                fontSize: "15px",
+                minHeight: "50px",
+                minWidth: "255px",
+                maxWidth: "calc(100vw - 24px)",
+                textAlign: "center" as const,
+              }),
         }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
+          width={isMobile ? "26" : "18"}
+          height={isMobile ? "26" : "18"}
           viewBox="0 0 32 32"
           fill="currentColor"
           aria-hidden="true"
@@ -202,7 +222,7 @@ export default function WhatsAppChat() {
           <path d="M16.02 3.2C9.03 3.2 3.36 8.86 3.36 15.85c0 2.22.58 4.39 1.69 6.31L3.2 28.8l6.79-1.78a12.6 12.6 0 0 0 6.03 1.54h.01c6.99 0 12.66-5.67 12.66-12.66 0-3.39-1.32-6.58-3.71-8.97A12.59 12.59 0 0 0 16.02 3.2Z" />
         </svg>
 
-        Falar Agora no WhatsApp
+        {!isMobile && "Falar Agora no WhatsApp"}
       </a>
     </div>
   )
